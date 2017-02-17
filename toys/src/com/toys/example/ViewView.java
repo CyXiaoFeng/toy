@@ -42,5 +42,10 @@ public class ViewView extends WebViewAbstract  {
 			
 		}
 	}
+	@Override
+	public void startGame(WebView webview) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -112,7 +112,12 @@ public class MainActivity extends Activity implements OnClickListener {
     @SuppressWarnings("static-access")
 	public void navigator(View buttonView, WebViewAbstract webViewAbstract) {
     	if(buttonView.getId() == R.id.attempt) {
-    		ng.initGame((WebView) webViewAbstract.findViewById(R.id.att_wv));
+    		WebView wv = (WebView) webViewAbstract.findViewById(R.id.att_wv);
+    		wv.setWebViewClient(webViewAbstract.webViewClient);
+    		wv.getSettings().setJavaScriptEnabled(true);
+    		wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+    		//ng.initGame(wv);
+    		
     	}
 //    	webview.loadUrl("http://192.168.0.20:9090/game/fighter/index.html");
     }

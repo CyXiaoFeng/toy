@@ -1,16 +1,20 @@
 package com.toys.example;
 
-import com.toys.sdk.NativeGame;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.WindowManager;
+import android.util.Log;
+import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
+import com.toys.sdk.NativeGame;
+
 public abstract class WebViewAbstract extends RelativeLayout {
+	String TAG = "WebViewAbstract";
 	WebViewClient webViewClient;
+	WebChromeClient webChromeClient;
 	NativeGame ngame = new NativeGame();
 	public WebViewAbstract(Context context) {
 		super(context);
@@ -22,25 +26,19 @@ public abstract class WebViewAbstract extends RelativeLayout {
 			};
 			@Override
 			public void onPageFinished(WebView view, String url) {
-				// TODO Auto-generated method stub
 				super.onPageFinished(view, url);
 				startGame(view);
 			}
 		};
-		
+		webChromeClient = new WebChromeClient() {
+			@Override
+			public boolean onJsAlert(WebView view, String url, String message,
+					JsResult result) {
+				result.confirm();
+				return true;
+			}
+		};
 	}
-	@SuppressLint("SetJavaScriptEnabled") 
-	public void startGame(WebView webview) {
-		/*String js = "function checkInit(){" +
-			 "if (!window.init)" +
-			    "requestAnimationFrame(checkInit); else " + 
-			      "window.init(); start();}" +
-			       "checkInit();";
-
-		webview.loadUrl("javascript:" + js);*/
-//		ngame.initGame(webview);
-//		ngame.startGame(this.getContext(),this.getContext().bo);
-		
-	}
-
+	public abstract void startGame(WebView webview);
+	
 }

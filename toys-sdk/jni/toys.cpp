@@ -1,4 +1,5 @@
 #include <toys.h>
+#include <exception>
 void start() {
 	LOGI("Java_com_toys_sdk_NativeGame_start");
 }
@@ -8,20 +9,23 @@ void init() {
 
 static void initGame(JNIEnv* env, jobject jobj, jobject webview) {
 	LOGI("Java_com_toys_sdk_NativeGame_initGame");
-	if(webview == NULL) {
-		LOGE("webview is NULL error");
-		return;
-	}
-	jclass cls = env->GetObjectClass(webview);
-	jmethodID mthd = env->GetMethodID(cls, "loadUrl", "(Ljava/lang/String;)V");
-	if(mthd == 0 || NULL == webview) {
-		LOGE("jmethodID native_str1 error");
-		return;
-	}
-	const char* js = CONST_JS.data();
-	LOGE("%s", js);
-	jstring url = env->NewStringUTF(js);
-	env->CallVoidMethod(webview,mthd,url);
+		if(webview == NULL) {
+			LOGE("webview is NULL error");
+			return;
+		}
+		jclass cls = env->GetObjectClass(webview);
+		jmethodID mthd = env->GetMethodID(cls, "loadUrl", "(Ljava/lang/String;)V");
+		if(mthd == 0 || NULL == webview) {
+			LOGE("jmethodID native_str1 error");
+			return;
+		}
+		char js[2000] = {};
+		sprintf(js,CONST_JS.data(),1.0,"android.stop","android.setScreenShot",
+				"android.sendData","android.playAudio","android.ready");
+		LOGE("%s", js);
+		jstring url = env->NewStringUTF(js);
+		env->CallVoidMethod(webview,mthd,url);
+		free(js);
 
 }
 
@@ -49,7 +53,6 @@ void startGame(JNIEnv* env, jobject jobj, jobject thiz) {
 
 	jobject manager_obj = env->CallObjectMethod(thiz, methodID_manager);
 
-
 	if(manager_obj == 0) {
 		LOGI("GetMethodID methodID_manager error");
 		return;
@@ -63,14 +66,14 @@ void startGame(JNIEnv* env, jobject jobj, jobject thiz) {
 	jstring frgtag =  env->NewStringUTF("frg");
 	if(methodID_mana == 0) {
 		LOGI("GetMethodID methodID_mana error");
-				return;
+		return;
 	}
 
 	jobject frg_view = env->CallObjectMethod(manager_obj, methodID_mana, frgtag);
 
 	if(frg_view == 0) {
 		LOGI("GetMethodID frg_view error");
-				return;
+		return;
 	}
 	jclass frag_in_class = env->FindClass("android/app/Fragment");
 

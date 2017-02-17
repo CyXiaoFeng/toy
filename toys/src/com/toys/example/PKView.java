@@ -50,4 +50,10 @@ public class PKView extends WebViewAbstract  {
 			webViewThree.destroy();
 		}
 	}
+
+	@Override
+	public void startGame(WebView webview) {
+		// TODO Auto-generated method stub
+		
+	}
 }
