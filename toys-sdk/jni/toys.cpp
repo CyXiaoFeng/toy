@@ -8,7 +8,10 @@ void init() {
 
 static void initGame(JNIEnv* env, jobject jobj, jobject webview) {
 	LOGI("Java_com_toys_sdk_NativeGame_initGame");
-//	char* js = "function checkInit(){ if (!window.init) requestAnimationFrame(checkInit); else window.init(); start();} checkInit();";
+	if(webview == NULL) {
+		LOGE("webview is NULL error");
+		return;
+	}
 	jclass cls = env->GetObjectClass(webview);
 	jmethodID mthd = env->GetMethodID(cls, "loadUrl", "(Ljava/lang/String;)V");
 	if(mthd == 0 || NULL == webview) {
@@ -24,9 +27,7 @@ static void initGame(JNIEnv* env, jobject jobj, jobject webview) {
 
 void startGame(JNIEnv* env, jobject jobj, jobject thiz) {
 
-	//jclass rela = env->GetObjectClass(thiz);
 	jclass native_clazz = env->FindClass("com/toys/example/R$id");
-
 	jfieldID fieldID_webview = env->GetStaticFieldID(native_clazz, "att_wv", "I");
 	jint str1 = env->GetStaticIntField(native_clazz, fieldID_webview);
 
@@ -36,8 +37,6 @@ void startGame(JNIEnv* env, jobject jobj, jobject thiz) {
 		LOGI("FindClass native_str1 error");
 		return;
 	}
-
-
 
 	jmethodID methodID_manager = env->GetMethodID(native_str1_1, "getFragmentManager",
 				"()Landroid/app/FragmentManager;");
@@ -85,7 +84,7 @@ void startGame(JNIEnv* env, jobject jobj, jobject thiz) {
 				return;
 	}
 
-	jclass view_class = env->FindClass("android/view/View");
+	jclass view_class = env->GetObjectClass(frg_in_view);
 
 	jmethodID methodID_str1 = env->GetMethodID(view_class, "findViewById",
 			"(I)Landroid/view/View;");
@@ -137,24 +136,7 @@ extern "C" {
 				sizeof(nativeMethod)/sizeof(nativeMethod[0]));
 		return JNI_VERSION_1_4;
 
-
 	}
 }
 
-/*
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-  JNIEXPORT void JNICALL Java_com_toys_sdk_NativeGame_start(JNIEnv *jenv, jclass jcls) {
-
-	  LOGI("Java_com_toys_sdk_NativeGame_start");
-  }
-
-  JNIEXPORT void JNICALL Java_com_toys_sdk_NativeGame_init(
-  	        JNIEnv* env, jobject jobj) {
-  	LOGI("Java_com_toys_sdk_NativeGame_init");
-
-  }
-}*/
 
