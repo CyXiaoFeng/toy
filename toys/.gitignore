@@ -1,0 +1,13 @@
+*.so
+*.class
+bin
+assets
+libs/
+obj/
+bin/
+gen/
+.settings/
+*.dex
+.classpath
+.project
+*.apk
