@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">toys</string>
+    <string name="attempt">试玩</string>
+    <string name="pk">PK</string>
+    <string name="view">观战</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
